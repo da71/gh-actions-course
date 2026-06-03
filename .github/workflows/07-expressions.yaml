@@ -1,0 +1,26 @@
+name: 07 - Using Expression
+
+on:
+    push:
+    workflow_dispatch:
+        inputs:
+            debug:
+                type: boolean
+                default: false
+                
+jobs:
+    echo:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "[debug] Show the trigger"
+              if: ${{ inputs.debug }}
+              run: |
+                echo "I was triggered by a ${{ github.event_name }} event."
+                echo "Ref: ${{ github.ref }}"
+                echo "SHA: ${{ github.sha }}"   
+                echo  "Runner OS: ${{ runner.os }}"
+            - name: "[debug] Print when triggered by main branch"
+              if: ${{ inputs.debug && github.ref == 'refs/heads/main' }}
+              run: echo "This was triggered by a push to the main branch."
+            - name: Greeting
+              run: echo "Hello, World!"
